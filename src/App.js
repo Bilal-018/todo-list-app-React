@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Header from "./components/Header";
+import AddTask from "./components/AddTask";
+import Task from "./components/Task";
+import { useState } from "react";
 
 function App() {
+  const [list, setList] = useState([]);
+
+  const updateList = (text) => {
+    setList([...list, text]);
+  };
+
+  const deleteItem = (index) => {
+    setList(list.filter((i) => i !== list[index]));
+  };
+
+  const prioritySet = (index) => {
+    if (index > 0) {
+      let data = [...list];
+      [data[index], data[index - 1]] = [data[index - 1], data[index]];
+
+      setList(data);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div>
+        <Header />
+        <AddTask list={list} updateList={updateList} />
+        <Task list={list} deleteItem={deleteItem} prioritySet={prioritySet} />
+      </div>
+    </>
   );
 }
 
